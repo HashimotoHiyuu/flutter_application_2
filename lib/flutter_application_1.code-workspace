@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "flutter_application_2",
+			"path": ".."
+		},
+		{
+			"name": "assets",
+			"path": "../../../../Downloads/samples/assets"
+		}
+	],
+	"settings": {}
+}
