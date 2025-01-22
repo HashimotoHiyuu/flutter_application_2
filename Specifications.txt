@@ -1,1 +1,28 @@
-a
+1ページ目 - FirstPage.dart
+タイトル「Sports Goods」が大きく表示される
+ボタン「Go to Sport Selection」を押すことで、次のページ（SecondPage.dart）に遷移する
+遷移:
+
+ボタン「Go to Sport Selection」を押すと、SecondPage へ遷移
+
+2ページ目 - SecondPage.dart
+目的: スポーツの選択画面
+
+内容:
+
+「Choose a Sport」と表示
+サッカー、野球、テニスの3つのスポーツボタンが表示され、それぞれを選択できる
+各スポーツを選択すると、そのスポーツの画像が表示されるページ（ThirdPage.dart）へ遷移する
+遷移:
+
+
+3ページ目 - ThirdPage.dart
+目的: 選択したスポーツの画像を表示
+
+内容:
+
+サッカー、野球、テニスのいずれかのスポーツ画像が3つ表示される
+それぞれの画像は、選択されたスポーツに応じて動的に変更される
+
+
+画面を左上の「戻る」ボタンで SecondPage.dart に戻れる

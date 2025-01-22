@@ -1,24 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/ThirdPage.dart';
+import 'thirdpage.dart';
 
 class SecondPage extends StatelessWidget {
+  const SecondPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("ページ(2)")),
-        body: Center(
-          child: TextButton(
-            child: Text("3ページに遷移"),
-            // （1） 前の画面に戻る
-            onPressed: () {
-              // （1） 指定した画面に遷移する
-              Navigator.push(
+      appBar: AppBar(title: const Text('Select a Sport')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                      // （2） 実際に表示するページ(ウィジェット)を指定する
-                      builder: (context) => ThirdPage()));
-            },
-          ),
-        ));
+                      builder: (context) => const ThirdPage(sport: 'Soccer')),
+                );
+              },
+              child: const Text('Soccer'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ThirdPage(sport: 'Baseball')),
+                );
+              },
+              child: const Text('Baseball'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ThirdPage(sport: 'Tennis')),
+                );
+              },
+              child: const Text('Tennis'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

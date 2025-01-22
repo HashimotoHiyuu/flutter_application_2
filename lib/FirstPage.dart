@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/SecondPage.dart';
+import 'secondpage.dart';
 
 class FirstPage extends StatelessWidget {
+  const FirstPage({super.key}); // const コンストラクタを追加
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("ページ(1)")),
-        body: Center(
-          child: TextButton(
-            child: Text("2ページに遷移"),
-            // （1） 前の画面に戻る
-            onPressed: () {
-              // （1） 指定した画面に遷移する
-              Navigator.pushReplacement(
+      appBar: AppBar(title: const Text('Sports Goods')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'Sports Goods',
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      // （2） 実際に表示するページ(ウィジェット)を指定する
-                      builder: (context) => SecondPage()));
-            },
-          ),
-        ));
+                  MaterialPageRoute(builder: (context) => const SecondPage()),
+                );
+              },
+              child: const Text('Go to Sport Selection'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

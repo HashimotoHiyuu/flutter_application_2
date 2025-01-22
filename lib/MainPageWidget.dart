@@ -1,29 +1,22 @@
 import 'package:flutter/material.dart';
-//import 'package:layout_sample/detail/CouponDetail.dart';
-import 'package:flutter_application_2/list/CouponListView.dart';
+import 'list/CouponListView.dart';
 
 class MainPageWidget extends StatefulWidget {
+  const MainPageWidget({super.key});
+
   @override
-  State<StatefulWidget> createState() {
-    return _MainPageWidget();
-  }
+  State<StatefulWidget> createState() => _MainPageWidgetState();
 }
 
-class _MainPageWidget extends State<MainPageWidget> {
+class _MainPageWidgetState extends State<MainPageWidget> {
   bool _isSelectedItem = false;
 
-  // 詳細画面を表示する
   void openDetail() {
-    setState(() {
-      _isSelectedItem = true;
-    });
+    setState(() => _isSelectedItem = true);
   }
 
-  // 詳細画面を消す
   void closeDetail() {
-    setState(() {
-      _isSelectedItem = false;
-    });
+    setState(() => _isSelectedItem = false);
   }
 
   @override
@@ -31,8 +24,7 @@ class _MainPageWidget extends State<MainPageWidget> {
     return Stack(
       children: [
         CouponListView(openDetail),
-        //if (_isSelectedItem)
-        //CouponDetail(closeDetail)
+        // if (_isSelectedItem) CouponDetail(closeDetail),
       ],
     );
   }
