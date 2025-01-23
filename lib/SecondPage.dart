@@ -1,49 +1,47 @@
 import 'package:flutter/material.dart';
-import 'thirdpage.dart';
+import 'package:flutter_application_2/ThirdPage.dart';
 
 class SecondPage extends StatelessWidget {
-  const SecondPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Select a Sport')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(title: Text("スポーツを選択")),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: [
             ElevatedButton(
+              child: Text("サッカー"),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ThirdPage(sport: 'Soccer')),
+                    builder: (context) => ThirdPage(sport: "soccer"),
+                  ),
                 );
               },
-              child: const Text('Soccer'),
             ),
-            const SizedBox(height: 20),
             ElevatedButton(
+              child: Text("野球"),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ThirdPage(sport: 'Baseball')),
+                    builder: (context) => ThirdPage(sport: "baseball"),
+                  ),
                 );
               },
-              child: const Text('Baseball'),
             ),
-            const SizedBox(height: 20),
             ElevatedButton(
+              child: Text("テニス"),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ThirdPage(sport: 'Tennis')),
+                    builder: (context) => ThirdPage(sport: "tennis"),
+                  ),
                 );
               },
-              child: const Text('Tennis'),
             ),
           ],
         ),
