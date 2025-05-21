@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
+import 'DetailPage.dart';
 
 class ThirdPage extends StatelessWidget {
   final String sport;
-
   const ThirdPage({super.key, required this.sport});
-
-  void addToCart(BuildContext context, String itemName) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$itemName をカートに追加しました'),
-        duration: const Duration(seconds: 1),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    String imagePrefix = sport.toLowerCase();
+    String prefix = sport.toLowerCase();
 
     return Scaffold(
       appBar: AppBar(title: Text('$sport Gear')),
@@ -24,7 +15,7 @@ class ThirdPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             Text(
               'Equipment for $sport:',
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -33,25 +24,37 @@ class ThirdPage extends StatelessWidget {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => addToCart(context, '$sport グッズ1'),
-                    child: Image.asset('assets/images/${imagePrefix}_1.png',
-                        width: 200),
-                  ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () => addToCart(context, '$sport グッズ2'),
-                    child: Image.asset('assets/images/${imagePrefix}_2.png',
-                        width: 200),
-                  ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () => addToCart(context, '$sport グッズ3'),
-                    child: Image.asset('assets/images/${imagePrefix}_3.png',
-                        width: 200),
-                  ),
-                ],
+                children: List.generate(3, (index) {
+                  String imageName = '${prefix}_${index + 1}.png';
+                  String productName = '$sport Item ${index + 1}';
+                  int price = (index + 1) * 1000; // 仮の金額設定
+
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => DetailPage(
+                            imageName: imageName,
+                            productName: productName,
+                            price: price,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Column(
+                        children: [
+                          Image.asset('assets/images/$imageName', width: 150),
+                          const SizedBox(height: 5),
+                          Text(productName),
+                          Text('¥$price')
+                        ],
+                      ),
+                    ),
+                  );
+                }),
               ),
             ),
           ],

@@ -1,51 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/ThirdPage.dart';
+import 'ThirdPage.dart';
 
 class SecondPage extends StatelessWidget {
+  const SecondPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("スポーツを選択")),
+      appBar: AppBar(title: const Text("スポーツを選択")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              child: Text("サッカー"),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ThirdPage(sport: "soccer"),
-                  ),
-                );
-              },
+              child: const Text("サッカー"),
+              onPressed: () => _goToThird(context, "soccer"),
             ),
             ElevatedButton(
-              child: Text("野球"),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ThirdPage(sport: "baseball"),
-                  ),
-                );
-              },
+              child: const Text("野球"),
+              onPressed: () => _goToThird(context, "baseball"),
             ),
             ElevatedButton(
-              child: Text("テニス"),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ThirdPage(sport: "tennis"),
-                  ),
-                );
-              },
+              child: const Text("テニス"),
+              onPressed: () => _goToThird(context, "tennis"),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _goToThird(BuildContext context, String sport) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ThirdPage(sport: sport)),
     );
   }
 }
