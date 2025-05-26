@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'DetailPage.dart';
+import 'CartPage.dart'; // ← カートページを忘れずにインポート
 
 class ThirdPage extends StatelessWidget {
   final String sport;
@@ -10,7 +11,20 @@ class ThirdPage extends StatelessWidget {
     String prefix = sport.toLowerCase();
 
     return Scaffold(
-      appBar: AppBar(title: Text('$sport Gear')),
+      appBar: AppBar(
+        title: Text('$sport Gear'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CartPage()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -27,7 +41,7 @@ class ThirdPage extends StatelessWidget {
                 children: List.generate(3, (index) {
                   String imageName = '${prefix}_${index + 1}.png';
                   String productName = '$sport Item ${index + 1}';
-                  int price = (index + 1) * 1000; // 仮の金額設定
+                  int price = (index + 1) * 1000;
 
                   return GestureDetector(
                     onTap: () {
@@ -49,7 +63,7 @@ class ThirdPage extends StatelessWidget {
                           Image.asset('assets/images/$imageName', width: 150),
                           const SizedBox(height: 5),
                           Text(productName),
-                          Text('¥$price')
+                          Text('¥$price'),
                         ],
                       ),
                     ),

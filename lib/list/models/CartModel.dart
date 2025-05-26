@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-// 商品1つ分の情報を持つクラス
 class CartItem {
   final String name;
   final int price;
   int quantity;
 
-  CartItem({required this.name, required this.price, required this.quantity});
+  CartItem({required this.name, required this.price, this.quantity = 1});
 }
 
 class CartModel extends ChangeNotifier {
@@ -15,35 +14,30 @@ class CartModel extends ChangeNotifier {
   List<CartItem> get items => _items;
 
   void addItem(String name, int price, int quantity) {
-    // すでに同じ商品がある場合、数量だけ増やす
-    final existingItem = _items.firstWhere(
-      (item) => item.name == name,
-      orElse: () => CartItem(name: '', price: 0, quantity: 0),
-    );
-
-    if (existingItem.name != '') {
-      existingItem.quantity += quantity;
+    final existing = _items.indexWhere((item) => item.name == name);
+    if (existing != -1) {
+      _items[existing].quantity += quantity;
     } else {
       _items.add(CartItem(name: name, price: price, quantity: quantity));
     }
     notifyListeners();
   }
 
-  void remove(CartItem item) {
-    _items.remove(item);
+  void removeItem(String name) {
+    _items.removeWhere((item) => item.name == name);
     notifyListeners();
   }
 
-  void updateQuantity(CartItem item, int quantity) {
-    item.quantity = quantity;
-    notifyListeners();
+  void updateQuantity(String name, int newQty) {
+    final index = _items.indexWhere((item) => item.name == name);
+    if (index != -1) {
+      _items[index].quantity = newQty;
+      notifyListeners();
+    }
   }
 
-  void clear() {
-    _items.clear();
-    notifyListeners();
-  }
-
-  int get totalPrice =>
-      _items.fold(0, (total, item) => total + (item.price * item.quantity));
+  int get totalPrice => _items.fold(
+        0,
+        (sum, item) => sum + (item.price * item.quantity),
+      );
 }
