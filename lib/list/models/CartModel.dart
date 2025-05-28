@@ -1,3 +1,4 @@
+// models/CartModel.dart
 import 'package:flutter/material.dart';
 
 class CartItem {
@@ -14,30 +15,34 @@ class CartModel extends ChangeNotifier {
   List<CartItem> get items => _items;
 
   void addItem(String name, int price, int quantity) {
-    final existing = _items.indexWhere((item) => item.name == name);
-    if (existing != -1) {
-      _items[existing].quantity += quantity;
+    // 同じ商品がある場合は数量を増やす
+    final index = _items.indexWhere((item) => item.name == name);
+    if (index != -1) {
+      _items[index].quantity += quantity;
     } else {
       _items.add(CartItem(name: name, price: price, quantity: quantity));
     }
     notifyListeners();
   }
 
-  void removeItem(String name) {
-    _items.removeWhere((item) => item.name == name);
+  void removeItem(CartItem item) {
+    _items.remove(item);
     notifyListeners();
   }
 
-  void updateQuantity(String name, int newQty) {
-    final index = _items.indexWhere((item) => item.name == name);
-    if (index != -1) {
-      _items[index].quantity = newQty;
+  void increaseQuantity(CartItem item) {
+    item.quantity++;
+    notifyListeners();
+  }
+
+  void decreaseQuantity(CartItem item) {
+    if (item.quantity > 1) {
+      item.quantity--;
       notifyListeners();
     }
   }
 
-  int get totalPrice => _items.fold(
-        0,
-        (sum, item) => sum + (item.price * item.quantity),
-      );
+  int get totalPrice {
+    return _items.fold(0, (sum, item) => sum + item.price * item.quantity);
+  }
 }

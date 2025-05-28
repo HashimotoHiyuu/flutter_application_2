@@ -1,3 +1,4 @@
+// pages/CartPage.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'list/models/CartModel.dart';
@@ -10,57 +11,63 @@ class CartPage extends StatelessWidget {
     final cart = Provider.of<CartModel>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('カート')),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: cart.items.length,
-              itemBuilder: (context, index) {
-                final item = cart.items[index];
-                return ListTile(
-                  leading: const Icon(Icons.shopping_cart),
-                  title: Text(item.name),
-                  subtitle: Text('¥${item.price} × ${item.quantity}'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
+      appBar: AppBar(title: const Text("カート")),
+      body: cart.items.isEmpty
+          ? const Center(child: Text("カートに商品がありません"))
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cart.items.length,
+                    itemBuilder: (context, index) {
+                      final item = cart.items[index];
+                      return ListTile(
+                        title: Text(item.name),
+                        subtitle: Text('¥${item.price} x ${item.quantity}'),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () => cart.decreaseQuantity(item),
+                            ),
+                            Text('${item.quantity}'),
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () => cart.increaseQuantity(item),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => cart.removeItem(item),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove),
+                      Text('合計金額: ¥${cart.totalPrice}',
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
                         onPressed: () {
-                          if (item.quantity > 1) {
-                            cart.updateQuantity(item.name, item.quantity - 1);
-                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('注文が完了しました！')),
+                          );
+                          // 注文確定処理があればここに書く
                         },
-                      ),
-                      Text('${item.quantity}'),
-                      IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: () {
-                          cart.updateQuantity(item.name, item.quantity + 1);
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          cart.removeItem(item.name);
-                        },
+                        child: const Text('注文する'),
                       ),
                     ],
                   ),
-                );
-              },
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              '合計: ¥${cart.totalPrice}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
