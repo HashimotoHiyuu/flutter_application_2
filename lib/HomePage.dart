@@ -75,6 +75,7 @@ class HomePage extends StatelessWidget {
                             product['name'] as String,
                             product['price'] as int,
                             1,
+                            product['image'] as String,
                           );
                     },
                   ),

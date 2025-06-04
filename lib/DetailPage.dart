@@ -61,10 +61,10 @@ class _DetailPageState extends State<DetailPage> {
             ElevatedButton(
               onPressed: () {
                 Provider.of<CartModel>(context, listen: false).addItem(
-                  widget.productName,
-                  widget.price,
-                  quantity,
-                );
+                    widget.productName,
+                    widget.price,
+                    quantity,
+                    'assets/images/${widget.imageName}');
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('カートに追加しました')),
                 );

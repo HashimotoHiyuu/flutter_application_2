@@ -1,12 +1,18 @@
-// models/CartModel.dart
 import 'package:flutter/material.dart';
 
+// カートに入れる商品を表すクラス
 class CartItem {
   final String name;
   final int price;
   int quantity;
+  final String imagePath;
 
-  CartItem({required this.name, required this.price, this.quantity = 1});
+  CartItem({
+    required this.name,
+    required this.price,
+    required this.quantity,
+    required this.imagePath,
+  });
 }
 
 class CartModel extends ChangeNotifier {
@@ -14,14 +20,22 @@ class CartModel extends ChangeNotifier {
 
   List<CartItem> get items => _items;
 
-  void addItem(String name, int price, int quantity) {
-    // 同じ商品がある場合は数量を増やす
-    final index = _items.indexWhere((item) => item.name == name);
-    if (index != -1) {
-      _items[index].quantity += quantity;
-    } else {
-      _items.add(CartItem(name: name, price: price, quantity: quantity));
+  void addItem(String name, int price, int quantity, String imagePath) {
+    // すでに同じ商品が入っていたら数量だけ増やす
+    for (var item in _items) {
+      if (item.name == name) {
+        item.quantity += quantity;
+        notifyListeners();
+        return;
+      }
     }
+
+    _items.add(CartItem(
+      name: name,
+      price: price,
+      quantity: quantity,
+      imagePath: imagePath,
+    ));
     notifyListeners();
   }
 
@@ -30,19 +44,11 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void increaseQuantity(CartItem item) {
-    item.quantity++;
+  void clear() {
+    _items.clear();
     notifyListeners();
   }
 
-  void decreaseQuantity(CartItem item) {
-    if (item.quantity > 1) {
-      item.quantity--;
-      notifyListeners();
-    }
-  }
-
-  int get totalPrice {
-    return _items.fold(0, (sum, item) => sum + item.price * item.quantity);
-  }
+  int get totalPrice =>
+      _items.fold(0, (sum, item) => sum + item.price * item.quantity);
 }
