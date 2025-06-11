@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'list/models/CartModel.dart';
+import 'package:flutter_application_2/list/models/CartModel.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -24,9 +24,7 @@ class CartPage extends StatelessWidget {
                   subtitle: Text('¥${item.price} × ${item.quantity}'),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      cart.removeItem(item);
-                    },
+                    onPressed: () => cart.removeItem(item),
                   ),
                 );
               },
@@ -34,10 +32,31 @@ class CartPage extends StatelessWidget {
           ),
           const Divider(),
           Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              '合計: ¥${cart.totalPrice}',
-              style: const TextStyle(fontSize: 20),
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Text(
+                  '合計: ¥${cart.totalPrice}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    if (cart.items.isNotEmpty) {
+                      cart.clear();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('ご購入ありがとうございます')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('カートに商品がありません')),
+                      );
+                    }
+                  },
+                  child: const Text('購入する'),
+                ),
+              ],
             ),
           ),
         ],

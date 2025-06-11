@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-// カートに入れる商品を表すクラス
+// 商品情報を表すクラス
 class CartItem {
   final String name;
   final int price;
-  int quantity;
+  final int quantity;
   final String imagePath;
 
   CartItem({
@@ -15,21 +15,14 @@ class CartItem {
   });
 }
 
+// カート全体を管理するクラス
 class CartModel extends ChangeNotifier {
   final List<CartItem> _items = [];
 
   List<CartItem> get items => _items;
 
+  // カートに商品を追加
   void addItem(String name, int price, int quantity, String imagePath) {
-    // すでに同じ商品が入っていたら数量だけ増やす
-    for (var item in _items) {
-      if (item.name == name) {
-        item.quantity += quantity;
-        notifyListeners();
-        return;
-      }
-    }
-
     _items.add(CartItem(
       name: name,
       price: price,
@@ -39,16 +32,23 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 商品を削除
   void removeItem(CartItem item) {
     _items.remove(item);
     notifyListeners();
   }
 
+  // カートを空にする
   void clear() {
     _items.clear();
     notifyListeners();
   }
 
-  int get totalPrice =>
-      _items.fold(0, (sum, item) => sum + item.price * item.quantity);
+  // 合計金額を計算
+  int get totalPrice {
+    return _items.fold(
+      0,
+      (sum, item) => sum + (item.price * item.quantity),
+    );
+  }
 }

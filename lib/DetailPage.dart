@@ -23,6 +23,9 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 完全な画像パスを組み立てて変数に
+    final String imagePath = 'assets/images/${widget.imageName}';
+
     return Scaffold(
       appBar: AppBar(title: Text(widget.productName)),
       body: Padding(
@@ -30,8 +33,7 @@ class _DetailPageState extends State<DetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/images/${widget.imageName}',
-                width: double.infinity, height: 200),
+            Image.asset(imagePath, width: double.infinity, height: 200),
             const SizedBox(height: 20),
             Text(widget.productName, style: const TextStyle(fontSize: 24)),
             const SizedBox(height: 10),
@@ -60,11 +62,13 @@ class _DetailPageState extends State<DetailPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                // カートに追加
                 Provider.of<CartModel>(context, listen: false).addItem(
-                    widget.productName,
-                    widget.price,
-                    quantity,
-                    'assets/images/${widget.imageName}');
+                  widget.productName,
+                  widget.price,
+                  quantity,
+                  imagePath, // ← 修正済み: 画像パスを渡す
+                );
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('カートに追加しました')),
                 );
