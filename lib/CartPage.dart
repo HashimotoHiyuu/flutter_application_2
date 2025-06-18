@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_2/list/models/CartModel.dart';
+import 'PurchaseHistoryPage.dart'; // 購入履歴ページをインポート
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -38,13 +39,16 @@ class CartPage extends StatelessWidget {
                 Text(
                   '合計: ¥${cart.totalPrice}',
                   style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     if (cart.items.isNotEmpty) {
-                      cart.clear();
+                      cart.purchase();
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('ご購入ありがとうございます')),
                       );
@@ -55,6 +59,17 @@ class CartPage extends StatelessWidget {
                     }
                   },
                   child: const Text('購入する'),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PurchaseHistoryPage()),
+                    );
+                  },
+                  child: const Text('購入履歴を見る'),
                 ),
               ],
             ),

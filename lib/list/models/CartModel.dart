@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// 商品情報を表すクラス
+/// 商品情報を表すクラス
 class CartItem {
   final String name;
   final int price;
@@ -15,13 +15,15 @@ class CartItem {
   });
 }
 
-// カート全体を管理するクラス
+/// カート全体を管理するクラス
 class CartModel extends ChangeNotifier {
   final List<CartItem> _items = [];
+  final List<CartItem> _purchaseHistory = []; // 購入履歴を追加
 
   List<CartItem> get items => _items;
+  List<CartItem> get purchaseHistory => _purchaseHistory;
 
-  // カートに商品を追加
+  /// カートに商品を追加
   void addItem(String name, int price, int quantity, String imagePath) {
     _items.add(CartItem(
       name: name,
@@ -32,19 +34,26 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // 商品を削除
+  /// 商品を削除
   void removeItem(CartItem item) {
     _items.remove(item);
     notifyListeners();
   }
 
-  // カートを空にする
-  void clear() {
-    _items.clear();
+  /// 購入処理：履歴に保存してカートを空にする
+  void purchase() {
+    _purchaseHistory.addAll(_items); // カートの中身を履歴へコピー
+    _items.clear(); // カートを空にする
     notifyListeners();
   }
 
-  // 合計金額を計算
+  /// 購入履歴をクリアする（任意）
+  void clearHistory() {
+    _purchaseHistory.clear();
+    notifyListeners();
+  }
+
+  /// カート合計金額を計算
   int get totalPrice {
     return _items.fold(
       0,
