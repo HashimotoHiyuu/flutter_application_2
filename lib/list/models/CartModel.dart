@@ -34,6 +34,20 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 商品の数量を変更する
+  void updateQuantity(CartItem item, int newQuantity) {
+    final index = _items.indexOf(item);
+    if (index != -1) {
+      _items[index] = CartItem(
+        name: item.name,
+        price: item.price,
+        quantity: newQuantity,
+        imagePath: item.imagePath,
+      );
+      notifyListeners();
+    }
+  }
+
   /// 商品を削除
   void removeItem(CartItem item) {
     _items.remove(item);
