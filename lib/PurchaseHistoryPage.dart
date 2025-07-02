@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_2/list/models/CartModel.dart';
+import '../list/models/CartModel.dart';
 
 class PurchaseHistoryPage extends StatelessWidget {
   const PurchaseHistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final history = context.watch<CartModel>().purchaseHistory;
+    final cart = Provider.of<CartModel>(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text('購入履歴')),
-      body: history.isEmpty
-          ? const Center(child: Text('購入履歴はありません'))
+      body: cart.purchaseHistory.isEmpty
+          ? const Center(child: Text('購入履歴はまだありません'))
           : ListView.builder(
-              itemCount: history.length,
+              padding: const EdgeInsets.all(12),
+              itemCount: cart.purchaseHistory.length,
               itemBuilder: (context, index) {
-                final item = history[index];
-                return ListTile(
-                  leading: Image.asset(item.imagePath, width: 50),
-                  title: Text(item.name),
-                  subtitle: Text('¥${item.price} × ${item.quantity}'),
+                final item = cart.purchaseHistory[index];
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: ListTile(
+                    leading: Image.asset(item.imagePath, width: 50),
+                    title: Text(item.name),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('¥${item.price} × ${item.quantity}'),
+                        Text('合計: ¥${item.price * item.quantity}'),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),

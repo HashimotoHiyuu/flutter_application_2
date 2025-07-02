@@ -12,12 +12,13 @@ class CartPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("カート")),
-      body: cart.items.isEmpty
-          ? const Center(child: Text("カートに商品がありません"))
-          : Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
+      body: Column(
+        children: [
+          // --- カートの商品一覧 or 空のメッセージ ---
+          Expanded(
+            child: cart.items.isEmpty
+                ? const Center(child: Text("カートに商品がありません"))
+                : ListView.builder(
                     itemCount: cart.items.length,
                     itemBuilder: (context, index) {
                       final item = cart.items[index];
@@ -63,52 +64,63 @@ class CartPage extends StatelessWidget {
                       );
                     },
                   ),
+          ),
+
+          // --- 合計金額・購入ボタン・履歴ボタン ---
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  '合計: ¥${cart.totalPrice}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        '合計: ¥${cart.totalPrice}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          cart.purchase();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('ご購入ありがとうございます')),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                        child: const Text('購入する'),
-                      ),
-                      const SizedBox(height: 10),
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const PurchaseHistoryPage(),
-                            ),
-                          );
-                        },
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                        child: const Text('購入履歴を見る'),
-                      ),
-                    ],
+                const SizedBox(height: 10),
+
+                // 購入ボタン（商品がある時のみ処理）
+                ElevatedButton(
+                  onPressed: () {
+                    if (cart.items.isNotEmpty) {
+                      cart.purchase(); // 購入処理 & 履歴保存
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('ご購入ありがとうございます')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('カートに商品がありません')),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
+                  child: const Text('購入する'),
+                ),
+                const SizedBox(height: 10),
+
+                // 購入履歴ページへ
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const PurchaseHistoryPage()),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: const Text('購入履歴を見る'),
                 ),
               ],
             ),
+          ),
+        ],
+      ),
     );
   }
 }
